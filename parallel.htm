@@ -48,6 +48,7 @@
                     <li><a href="./parallel.htm">PARALLEL</a></li>
                 </ul>
         </li>
+        <li><a href="./code.htm">CODE</a></li>
         <li><a href="./results.htm">RESULTS</a></li>
         <li><a href="./next_steps.htm">NEXT STEPS</a></li>
       </ul>
@@ -68,28 +69,28 @@
 <div class="container">
 <div class="container">
 	<h2>Parallel Algorithms</h2>
-  <h3>Baseline - No Blocks</h3>
+  <h3>I. Baseline Parallel - No Blocks</h3>
 	<p>In our first parallel NW implementation, we update the alignment matrix along the anti-diagonals in parallel. This is valid due to the particular data dependency of this problem. In each iteration, workers along the anti-diagonal start the computation once the previous anti-diagonal is finished. We only use global memory in this implementation.</p>
   <div class="container" align="center"> 
     <img src="./img/parallel_one.png" width = "500" height = "400" alt="edits" class="img-responsive" /> 
   </div>
   </br>
 
-  <h3>Block-wise Parallel - Serial within Blocks</h3>
+  <h3>II. Block-wise Parallel - Serial within Blocks</h3>
   <p>Our second parallel implementation updates the alignment matrix block-wise along the anti-diagonals to take advantage of local memory access. Within each workgroup, we update the alignment matrix using the serial dynamic programming algorithm in local memory.</p>
   <div class="container" align="center"> 
     <img src="./img/parallel_two.png" width = "500" height = "400" alt="edits" class="img-responsive" /> 
   </div>
   </br>
 
-  <h3>Block-wise Parallel - Parallel within Blocks</h3>
+  <h3>III. Block-wise Parallel - Parallel within Blocks</h3>
   <p>In our third parallel implementation, we also update the alignment matrix block-wise along the anti-diagonals. However, within each workgroup, instead of using the serial dynamic programming algorithm, we use the parallel NW algorithm along the anti-diagonals in local memory.</p>
   <div class="container" align="center"> 
     <img src="./img/parallel_three.png" width = "500" height = "400" alt="edits" class="img-responsive" /> 
   </div>
   </br>
 
-  <h3>Block-wise Parallel - Coalesced Read & Write</h3>
+  <h3>IV. Block-wise Parallel - Coalesced Read & Write</h3>
   <p>Our final parallel implementation achieves coalesced memory access by saving two tables in global memory for columns and rows on the right of block boundaries, since only these data are required for the next iteration. We expect faster memory I/O with coalesced column reads.</p>
   <div class="container" align="center"> 
     <img src="./img/parallel_four.png" width = "750" height = "600" alt="edits" class="img-responsive" /> 
