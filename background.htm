@@ -73,15 +73,17 @@
 	<h2>Introduction</h2>
 	<p>In this project, we use OpenCL to implement and benchmark various parallel Needleman-Wunsch algorithms to compute edit distances between two sequences of strings.</p>
 	<hr/>
-	<h2>Edit Distance</h2>
-	<p>An edit is defined as a single-character substitution, insertion, or deletion when comparing two string sequences. The edit distance measures the number of edits needed to go from one string sequence to another. Efficient computation of edit distances between string sequences has many applications in various domains, such as computational biology, machine translation, speech recognition, and malware detection.</p>
+	<h2>Definition</h2>
+	<p>An edit is defined as a single-character substitution, insertion, or deletion when comparing two string sequences. An edit distance measures the number of edits needed to go from one string sequence to another.</p>
     
     <div class="container" align="center"> 
-        <img src="./img/edits.png" alt="edits" class="img-responsive" /> 
+        <img src="./img/edits.png" width = "400" height = "300" alt="edits" class="img-responsive" /> 
     </div>
-
-	<p>From a Bayesian angle, our most direct inspiration for this project was the <a href="http://www.sumsar.net/blog/2013/07/modeling-match-results-in-la-liga-part-one/">winning submission</a> of the 2013 UseR Data Analysis Contest, featuring a hierarchical Bayesian Poisson model to predict Spanish soccer match scores. Allen Downey implemented a similar model in <a href="http://www.greenteapress.com/thinkbayes/">Think Bayes</a> to predict the Boston Bruins’ Stanley Cup chances.</p>
-	<p>Our work draws inspiration from the Bayesian bent of the latter works (and what we have learned in class thus far) and attempt to solve the problems of the former in a more sophisticated (and Bayesian!) manner.</p>
+  <hr/>
+  <h2>Application</h2>
+	<p>Efficient computation of edit distances between string sequences has many applications in computational biology, machine translation, speech recognition, and malware detection. For example, we can use edit distances to measure the similarities between two DNA molecules, which typically consist of billions of base pairs. Here the problem is particularly computationally intensive with the standard dynammic programming algorithm.</p>
+	
+  <p>Our work draws inspiration from the <a href="https://en.wikipedia.org/wiki/Needleman%E2%80%93Wunsch_algorithm"> Needleman-Wunsch algorithm</a>. Since each iteration in the algorithm is not computationally intensive by itself, parallel algorithms with GPUs are particularly suited to this problem. We develop several versions of parallel algorithms implemented in OpenCL to compute edit distances between long string sequences.</p>  
 </div>
 	
 
