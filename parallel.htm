@@ -67,21 +67,35 @@
   </br>
 <div class="container">
 <div class="container">
-	<h2>Introduction</h2>
-	<p>In this project, we use OpenCL to implement and benchmark various parallel implementations of the <a href="https://en.wikipedia.org/wiki/Needleman%E2%80%93Wunsch_algorithm"> Needleman-Wunsch algorithm</a> to compute edit distances between two sequences of strings.</p>
-	<hr/>
-	<h2>Definition</h2>
-	<p>An edit is defined as a single-character substitution, insertion, or deletion when comparing two string sequences. An edit distance measures the number of edits needed to go from one string sequence to another.</p>
-    
+	<h2>Parallel Algorithms</h2>
+  <h3>Baseline - No Blocks</h3>
+	<p>In our first parallel NW implementation, we update the alignment matrix along the anti-diagonals in parallel. This is valid due to the particular data dependency of this problem. In each iteration, workers along the anti-diagonal start the computation once the previous anti-diagonal is finished. We only use global memory in this implementation.</p>
   <div class="container" align="center"> 
-      <img src="./img/edits.png" width = "400" height = "300" alt="edits" class="img-responsive" /> 
+    <img src="./img/parallel_one.png" width = "500" height = "400" alt="edits" class="img-responsive" /> 
+  </div>
+  </br>
+
+  <h3>Block-wise Parallel - Serial within Blocks</h3>
+  <p>Our second parallel implementation updates the alignment matrix block-wise along the anti-diagonals to take advantage of local memory access. Within each workgroup, we update the alignment matrix using the serial dynamic programming algorithm in local memory.</p>
+  <div class="container" align="center"> 
+    <img src="./img/parallel_two.png" width = "500" height = "400" alt="edits" class="img-responsive" /> 
+  </div>
+  </br>
+
+  <h3>Block-wise Parallel - Parallel within Blocks</h3>
+  <p>In our third parallel implementation, we also update the alignment matrix block-wise along the anti-diagonals. However, within each workgroup, instead of using the serial dynamic programming algorithm, we use the parallel NW algorithm along the anti-diagonals in local memory.</p>
+  <div class="container" align="center"> 
+    <img src="./img/parallel_three.png" width = "500" height = "400" alt="edits" class="img-responsive" /> 
+  </div>
+  </br>
+
+  <h3>Block-wise Parallel - Coalesced Read & Write</h3>
+  <p>Our final parallel implementation achieves coalesced memory access by saving two tables in global memory for columns and rows on the right of block boundaries, since only these data are required for the next iteration. We expect faster memory I/O with coalesced column reads.</p>
+  <div class="container" align="center"> 
+    <img src="./img/parallel_four.png" width = "750" height = "600" alt="edits" class="img-responsive" /> 
   </div>
 
-  <hr/>
-  <h2>Application</h2>
-	<p>Efficient computation of edit distances between string sequences has many applications in computational biology, machine translation, speech recognition, and malware detection. For example, we can use edit distances to measure the similarities between two DNA molecules, which typically consist of billions of base pairs. Here the problem is particularly computationally intensive with the standard dynammic programming algorithm.</p>
-	
-  <p>Our work draws inspiration from the <a href="https://en.wikipedia.org/wiki/Needleman%E2%80%93Wunsch_algorithm"> Needleman-Wunsch algorithm</a>. Since each iteration in the algorithm is not computationally intensive by itself, parallel algorithms with GPUs are particularly suited to this problem. We develop several versions of parallel algorithms implemented in OpenCL to compute edit distances between long string sequences.</p>  
+
 </div>
 	
 
